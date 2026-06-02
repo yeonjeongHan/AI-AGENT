@@ -33,7 +33,7 @@ pipeline {
 		            usernameVariable: 'SSH_USER'
 		        )]) {
 		            sh """
-		             echo "Current Jenkins host IP\:"
+		             echo "Current Jenkins host IP:"
     					   hostname -I
 		                chmod 600 ${SSH_KEY}
 		
