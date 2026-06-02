@@ -20,7 +20,7 @@ pipeline {
                     rm -f source.tar.gz
                     tar --exclude=.git --exclude=target -czf source.tar.gz AI-AGENT
                     ls -al source.tar.gz
-                    ls -al AI-AGENT/devops/jenkins/settings.xml
+                    ls -al devops/jenkins/settings.xml
                 '''
             }
         }
