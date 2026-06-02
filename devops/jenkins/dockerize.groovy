@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                     rm -f source.tar.gz
-                    tar --exclude=.git --exclude=target -czf source.tar.gz AI-AGENT
+                    tar --exclude=.git --exclude=target -czf source.tar.gz .
                     ls -al source.tar.gz
                     ls -al devops/jenkins/settings.xml
                 '''
