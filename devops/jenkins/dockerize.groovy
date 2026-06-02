@@ -33,6 +33,8 @@ pipeline {
 		            usernameVariable: 'SSH_USER'
 		        )]) {
 		            sh """
+		             echo "Current Jenkins host IP\:"
+    					   hostname -I
 		                chmod 600 ${SSH_KEY}
 		
 		                ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no \
