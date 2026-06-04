@@ -18,8 +18,8 @@ pipeline {
             steps {
                 sh '''
                     rm -f source.tar.gz
-                    tar --warning=no-file-changed --exclude=.git --exclude=target --exclude=source.tar.gz -czf source.tar.gz .
-                    echo "2. tar done, exit code=$?" 
+                  //  tar --warning=no-file-changed --exclude=.git --exclude=target --exclude=source.tar.gz -czf source.tar.gz .
+                
                     ls -al source.tar.gz
                     ls -al devops/jenkins/settings.xml
                 '''
