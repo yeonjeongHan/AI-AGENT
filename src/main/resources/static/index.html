@@ -53,6 +53,8 @@
             border-radius: 16px;
             line-height: 1.5;
             font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .user .bubble {
@@ -98,67 +100,112 @@
             cursor: pointer;
             font-weight: bold;
         }
+
+        .input-box button\:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
-    <div class="chat-shell">
-        <div class="header">AI Chat</div>
+<div class="chat-shell">
+    <div class="header">AI Chat</div>
 
-        <div class="messages" id="chatBody">
-            <div class="message bot">
-                <div class="bubble">안녕하세요. 무엇을 도와드릴까요?</div>
-            </div>
-        </div>
-
-        <div class="input-area">
-            <div class="input-box">
-                <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." />
-                <button onclick="sendMessage()">전송</button>
-            </div>
+    <div class="messages" id="chatBody">
+        <div class="message bot">
+            <div class="bubble">안녕하세요. 무엇을 도와드릴까요?</div>
         </div>
     </div>
 
-    <script>
-        async function sendMessage() {
-            const input = document.getElementById("messageInput");
-            const chatBody = document.getElementById("chatBody");
-            const message = input.value.trim();
-            if (!message) return;
+    <div class="input-area">
+        <div class="input-box">
+            <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." />
+            <button id="sendBtn" onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+</div>
 
-            addMessage("user", message);
-            input.value = "";
+<script>
+	async function sendMessage() {
+	    const input = document.getElementById("messageInput");
+	    const sendBtn = document.getElementById("sendBtn");
+	    const message = input.value.trim();
+	
+	    if (!message) return;
+	
+	    addMessage("user", message);
+	    input.value = "";
+	    sendBtn.disabled = true;
+	
+	    const loadingId = addMessage("bot", "응답 생성 중...");
+	
+	    try {
+	        const res = await fetch("/api/chat", {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            body: JSON.stringify({
+	                message: message,              // 백엔드와 키 이름 맞춤
+	                user: "test1234",
+	                conversation_id: "",
+	                files: [
+	                    {
+	                        type: "image",
+	                        transfer_method: "remote_url",
+	                        url: "https://api.abclab.ktds.com/v1/logo/logo.png"
+	                    }
+	                ]
+	            })
+	        });
+	
+	        if (!res.ok) {
+	            throw new Error("HTTP " + res.status);
+	        }
+	
+	        const data = await res.json();
+	
+	        const reply = data.reply ?? "응답이 없습니다.";
+	
+	        removeMessage(loadingId);
+	        addMessage("bot", reply);
+	
+	    } catch (error) {
+	        removeMessage(loadingId);
+	        addMessage("bot", "오류 발생: " + error.message);
+	    } finally {
+	        sendBtn.disabled = false;
+	    }
+	}
+	
+	function addMessage(type, text) {
+	    const chatBody = document.getElementById("chatBody");
+	    const div = document.createElement("div");
+	    div.className = "message " + type;
+	
+	    const bubble = document.createElement("div");
+	    bubble.className = "bubble";
+	    bubble.textContent = text;
+	
+	    div.appendChild(bubble);
+	    chatBody.appendChild(div);
+	    chatBody.scrollTop = chatBody.scrollHeight;
+	
+	    return div;
+	}
+	
+	function removeMessage(element) {
+	    if (element && element.parentNode) {
+	        element.parentNode.removeChild(element);
+	    }
+	}
+	
+	document.getElementById("messageInput").addEventListener("keypress", function(e) {
+	    if (e.key === "Enter") {
+	        sendMessage();
+	    }
+	});
+</script>
 
-            const res = await fetch("/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ message: message })
-            });
-			
-            const data = await res.json();
-            addMessage("bot", data.reply);
-        }
-
-        function addMessage(type, text) {
-            const chatBody = document.getElementById("chatBody");
-            const div = document.createElement("div");
-            div.className = "message " + type;
-
-            const bubble = document.createElement("div");
-            bubble.className = "bubble";
-            bubble.textContent = text;
-
-            div.appendChild(bubble);
-            chatBody.appendChild(div);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        document.getElementById("messageInput").addEventListener("keypress", function(e) {
-            if (e.key === "Enter") {
-                sendMessage();
-            }
-        });
-    </script>
 </body>
 </html>
