@@ -3,153 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spring Chat</title>
+    <title>AI Chat</title>
     <style>
-        :root {
-            --bg: #0f172a;
-            --panel: rgba(255,255,255,0.08);
-            --panel-border: rgba(255,255,255,0.12);
-            --text: #e2e8f0;
-            --subtext: #94a3b8;
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --user-bubble: linear-gradient(135deg, #6366f1, #8b5cf6);
-            --bot-bubble: rgba(255,255,255,0.12);
-            --shadow: 0 20px 60px rgba(0,0,0,0.35);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
-            font-family: "Segoe UI", "Pretendard", "Noto Sans KR", sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(99,102,241,0.25), transparent 30%),
-                radial-gradient(circle at bottom right, rgba(14,165,233,0.18), transparent 25%),
-                var(--bg);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
         }
 
         .chat-shell {
-            width: 100%;
-            max-width: 980px;
-            height: 92vh;
-            background: rgba(15, 23, 42, 0.72);
-            backdrop-filter: blur(18px);
-            border: 1px solid var(--panel-border);
-            border-radius: 24px;
-            box-shadow: var(--shadow);
+            max-width: 900px;
+            height: 100vh;
+            margin: 0 auto;
             display: flex;
-            overflow: hidden;
-        }
-
-        .sidebar {
-            width: 280px;
+            flex-direction: column;
             background: rgba(255,255,255,0.04);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .brand {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .brand span {
-            color: #a5b4fc;
-        }
-
-        .status {
-            font-size: 13px;
-            color: var(--subtext);
-        }
-
-        .profile-card {
-            padding: 16px;
-            border-radius: 18px;
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-        }
-
-        .profile-title {
-            font-size: 14px;
-            color: #cbd5e1;
-            margin-bottom: 10px;
-        }
-
-        .chip {
-            display: inline-block;
-            margin: 4px 6px 0 0;
-            padding: 7px 12px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.08);
-            color: #dbeafe;
-            font-size: 12px;
-        }
-
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
         }
 
         .header {
-            padding: 22px 28px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .header .sub {
-            font-size: 13px;
-            color: var(--subtext);
-            margin-top: 4px;
-        }
-
-        .online {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #cbd5e1;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 10px rgba(34,197,94,0.8);
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .messages {
             flex: 1;
-            padding: 28px;
+            padding: 24px;
             overflow-y: auto;
         }
 
         .message {
             display: flex;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .message.user {
@@ -161,176 +48,109 @@
         }
 
         .bubble {
-            max-width: 72%;
-            padding: 14px 18px;
-            border-radius: 18px;
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            line-height: 1.5;
             font-size: 14px;
-            line-height: 1.6;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            animation: fadeInUp 0.25s ease;
         }
 
         .user .bubble {
-            background: var(--user-bubble);
+            background: #6366f1;
             color: white;
-            border-bottom-right-radius: 6px;
+            border-bottom-right-radius: 4px;
         }
 
         .bot .bubble {
-            background: var(--bot-bubble);
+            background: #1e293b;
+            color: #e2e8f0;
             border: 1px solid rgba(255,255,255,0.08);
-            color: var(--text);
-            border-bottom-left-radius: 6px;
+            border-bottom-left-radius: 4px;
         }
 
         .input-area {
-            padding: 20px 24px 24px;
+            padding: 16px;
             border-top: 1px solid rgba(255,255,255,0.08);
+            background: #111827;
         }
 
         .input-box {
             display: flex;
-            gap: 12px;
-            align-items: center;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            padding: 10px;
+            gap: 10px;
         }
 
         .input-box input {
             flex: 1;
-            border: none;
+            padding: 14px;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            background: #0f172a;
+            color: white;
             outline: none;
-            background: transparent;
-            color: var(--text);
-            font-size: 14px;
-            padding: 10px 12px;
-        }
-
-        .input-box input::placeholder {
-            color: #94a3b8;
         }
 
         .input-box button {
+            padding: 14px 20px;
             border: none;
-            padding: 12px 18px;
-            border-radius: 14px;
+            border-radius: 12px;
             background: linear-gradient(135deg, #6366f1, #3b82f6);
             color: white;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.15s ease, opacity 0.15s ease;
-        }
-
-        .input-box button\:hover {
-            transform: translateY(-1px);
-            opacity: 0.95;
-        }
-
-        .input-box button\:active {
-            transform: translateY(0);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .chat-shell {
-                flex-direction: column;
-                height: 100vh;
-                border-radius: 0;
-            }
-
-            .sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-            }
-
-            .bubble {
-                max-width: 88%;
-            }
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="chat-shell">
-        <aside class="sidebar">
-            <div>
-                <div class="brand">Works <span>Chat</span></div>
-                <div class="status">채팅Bot</div>
-            </div>
+        <div class="header">AI Chat</div>
 
-            <div class="profile-card">
-                <div class="profile-title">바로가기</div>
-                <div class="chip">SAP</div>
-                <div class="chip">Java</div>
-                <div class="chip">Spring Boot</div>
-                <div class="chip">WebSocket</div>
-                <div class="chip">Azure</div>
+        <div class="messages" id="chatBody">
+            <div class="message bot">
+                <div class="bubble">안녕하세요. 무엇을 도와드릴까요?</div>
             </div>
+        </div>
 
-            <div class="profile-card">
-                <div class="profile-title">현재 상태</div>
-                <div class="status">메시지 12개</div>
-                <div class="status">연결 상태: 정상</div>
+        <div class="input-area">
+            <div class="input-box">
+                <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." />
+                <button onclick="sendMessage()">전송</button>
             </div>
-        </aside>
-
-        <main class="main">
-            <div class="header">
-                <div>
-                    <h1>한연정님과의 대화</h1>
-                    <div class="sub">빠르고 깔끔한 업무용 채팅 화면</div>
-                </div>
-                <div class="online">
-                    <span class="dot"></span>
-                    Online
-                </div>
-            </div>
-
-            <div class="messages" id="chatBody">
-                <div class="message bot">
-                    <div class="bubble">안녕하세요. 무엇을 도와드릴까요?</div>
-                </div>
-                <div class="message user">
-                    <div class="bubble">알려줘</div>
-                </div>
-            </div>
-
-            <div class="input-area">
-                <div class="input-box">
-                    <input type="text" id="messageInput" placeholder="메시지를 입력하세요...">
-                    <button onclick="sendMessage()">전송</button>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 
     <script>
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById("messageInput");
             const chatBody = document.getElementById("chatBody");
             const message = input.value.trim();
-
             if (!message) return;
 
-            const userMsg = document.createElement("div");
-            userMsg.className = "message user";
-            userMsg.innerHTML = '<div class="bubble"></div>';
-            userMsg.querySelector(".bubble").textContent = message;
-
-            chatBody.appendChild(userMsg);
+            addMessage("user", message);
             input.value = "";
+
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: message })
+            });
+
+            const data = await res.json();
+            addMessage("bot", data.reply);
+        }
+
+        function addMessage(type, text) {
+            const chatBody = document.getElementById("chatBody");
+            const div = document.createElement("div");
+            div.className = "message " + type;
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.textContent = text;
+
+            div.appendChild(bubble);
+            chatBody.appendChild(div);
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
