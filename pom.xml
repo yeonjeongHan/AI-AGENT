@@ -89,96 +89,7 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-		
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/commons-logging-1.1.jar</systemPath>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>2.12.0</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/xercesImpl.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech</groupId>
-			<artifactId>INICrypto</artifactId>
-			<version>4.2.10</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/INICrypto-4.2.10.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech</groupId>
-			<artifactId>INISAFECore</artifactId>
-			<version>2.2.50</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/INISAFECore-2.2.50.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech</groupId>
-			<artifactId>INISAFENet</artifactId>
-			<version>7.2.65</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/INISAFENet-7.2.65_NS.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech</groupId>
-			<artifactId>INISAFEPKI</artifactId>
-			<version>1.1.50</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/INISAFEPKI-1.1.50.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/json-lib-2.4.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/log4j-1.2.15.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech.safedb.core</groupId>
-			<artifactId>SafeDBCore</artifactId>
-			<version>3.2.22</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/SafeDBCore_v3.2.22.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech.safedb.crypto</groupId>
-			<artifactId>SafeDBCrypto</artifactId>
-			<version>3.2.22</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/SafeDBCrypto_v3.2.22.jar</systemPath>
-		</dependency>
-
-		<dependency>
-			<groupId>com.initech.safedb.sdk</groupId>
-			<artifactId>SafeDBSDK</artifactId>
-			<version>3.2.22</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/SafeDB_SDK_v3.2.22.jar</systemPath>
-		</dependency>
-		
+			
 		
 		
 		<!-- 자동 빌드 -->
@@ -188,14 +99,7 @@
 		</dependency>
 		<!-- 자동 빌드 -->
 		
-		<!-- SAP jar -->
-		<dependency>
-			<groupId>com.sap</groupId>
-			<artifactId>sapjco3</artifactId>
-			<version>3.0.14</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/sapjco3.jar</systemPath>
-		</dependency>
+	
 
 		<!-- safeDB 관련 jar -->
 		
@@ -211,14 +115,6 @@
 		    <version>2.6</version>
 		</dependency>
 
-		<dependency>
-			<groupId>net.sf.ezmorph</groupId>
-			<artifactId>ezmorph</artifactId>
-			<version>1.0.6</version>
-			<scope>system</scope>
-			<systemPath>${webapp.lib}/ezmorph-1.0.6.jar</systemPath>
-		</dependency>
-		
 		
 		<!-- war 관련 dependency -->
 		<dependency>
