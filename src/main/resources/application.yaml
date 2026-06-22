@@ -1,7 +1,7 @@
 abclab:
   api:
     url: https://api.abclab.ktds.com/v1/chat-messages
-    key: app-SgndqPNL58YdTtgmiMYzdVIB
+    key: 
     add_url: https\://api.abclab.ktds.com/v1
     add_key: YOUR_API_KEY
     
