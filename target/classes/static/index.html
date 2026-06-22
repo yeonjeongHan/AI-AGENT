@@ -135,7 +135,7 @@
                 },
                 body: JSON.stringify({ message: message })
             });
-			
+
             const data = await res.json();
             addMessage("bot", data.reply);
         }

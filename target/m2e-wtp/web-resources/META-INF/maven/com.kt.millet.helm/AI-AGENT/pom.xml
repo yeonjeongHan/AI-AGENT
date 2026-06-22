@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.12</version>
+		<relativePath/>
+	</parent>
+	<groupId>com.kt.millet.helm</groupId>
+	<artifactId>AI-AGENT</artifactId>
+	<version>2.0.8${version.snapshot}</version>
+	<name>AI-AGENT</name>
+	<description>WTMS project for Spring Boot</description>
+	
+	<properties>
+		<java.version>17</java.version>
+		<version.snapshot></version.snapshot>
+		<docker.image.prefix>helm-sample</docker.image.prefix>
+		<webapp.lib>${basedir}/src/main/webapp/WEB-INF/lib</webapp.lib>
+	</properties>
+	
+	<!-- Maven Dependency Repository -->
+	<repositories>
+		<repository>
+			<id>runner-proxy-repository</id>
+			<name>Maven Central Repository</name>
+			<url>https://devspace-repository.azdevops.kt.co.kr/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<!-- Maven Plugin Repository -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>runner-proxy-repository</id>
+			<name>Maven Central Repository</name>
+			<url>https://devspace-repository.azdevops.kt.co.kr/repository/maven-public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!-- Maven 배포 저장소 설정 -->
+	<distributionManagement>
+		<repository>
+			<id>prd</id>
+			<name>Release Repository (PRD)</name>
+			<url>https://devspace-repository.azdevops.kt.co.kr/repository/ag014401-wtms-maven2-prd/</url>
+		</repository>
+		<snapshotRepository>
+			<id>dev</id>
+			<name>Snapshot Repository (DEV)</name>
+			<url>https://devspace-repository.azdevops.kt.co.kr/repository/ag014401-wtms-maven2-dev/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+			
+		
+		
+		<!-- 자동 빌드 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		<!-- 자동 빌드 -->
+		
+	
+
+		<!-- safeDB 관련 jar -->
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.7</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>2.6</version>
+		</dependency>
+
+		
+		<!-- war 관련 dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+
+		</dependency>
+		<!-- war 관련 dependency -->
+		
+		
+		<dependency>
+			<groupId>net.sourceforge.barbecue</groupId>
+			<artifactId>barbecue</artifactId>
+			<version>1.5-beta1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+		
+		<!-- Thymeleaf 관련 dependency -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		
+		
+		
+	</dependencies>
+
+	<packaging>war</packaging>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<finalName>AI-AGENT</finalName>
+
+		<plugins>
+			<!-- Spring Boot Maven Plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.5.12</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.5.0</version> <!-- 최신 안정 버전 -->
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.5.1</version> <!-- 최신 안정 버전 -->
+			</plugin>
+			
+			<!-- Docker plugin -->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.2.2</version>
+				<configuration>
+					<imageName>${docker.image.prefix}/${project.artifactId}:${project.version}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.war</include>
+						</resource>
+					</resources>
+					<googleContainerRegistryEnabled>false</googleContainerRegistryEnabled>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
