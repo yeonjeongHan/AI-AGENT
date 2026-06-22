@@ -16,7 +16,8 @@ public class ChatController {
     @PostMapping("/chat")
     public Map<String, String> chat(@RequestBody Map<String, String> request) {
         String message = request.get("message");
-
+        	
+        message = "test";
         Map<String, String> response = new HashMap<>();
         response.put("reply", "AI 응답 예시: " + message);
 
