@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>지식 문서 업데이트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f8f9fb;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 240px;
+            resize: vertical;
+        }
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #2f6fed;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        button\:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background: #f4f6f8;
+            border: 1px solid #ddd;
+            padding: 16px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>지식 문서 업데이트</h2>
+
+    <div class="form-group">
+        <label for="datasetId">dataset_id</label>
+        <input type="text" id="datasetId" placeholder="예: 231a5c94-dc21-353c-9121-5361adc2cbdb" />
+    </div>
+
+    <div class="form-group">
+        <label for="documentId">document_id</label>
+        <input type="text" id="documentId" placeholder="예: 4ss1aa71-2c3d-4071-c236-5d12aadd1e10" />
+    </div>
+
+    <div class="form-group">
+        <label for="name">문서명 (선택)</label>
+        <input type="text" id="name" placeholder="예: data.txt" />
+    </div>
+
+    <div class="form-group">
+        <label for="text">문서 내용</label>
+        <textarea id="text" placeholder="업데이트할 문서 텍스트를 입력하세요."></textarea>
+    </div>
+
+    <button id="sendBtn" onclick="updateKnowledge()">문서 업데이트</button>
+
+    <div id="result" class="result">결과가 여기에 표시됩니다.</div>
+</div>
+
+<script>
+async function updateKnowledge() {
+    const datasetId = document.getElementById("datasetId").value.trim();
+    const documentId = document.getElementById("documentId").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const text = document.getElementById("text").value.trim();
+    const resultBox = document.getElementById("result");
+    const sendBtn = document.getElementById("sendBtn");
+
+    if (!datasetId || !documentId || !text) {
+        resultBox.textContent = "dataset_id, document_id, text는 필수입니다.";
+        return;
+    }
+
+    sendBtn.disabled = true;
+    resultBox.textContent = "업데이트 중...";
+
+    try {
+        const res = await fetch("/api/knowledge/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                dataset_id: datasetId,
+                document_id: documentId,
+                name: name,
+                text: text
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.message || "HTTP " + res.status);
+        }
+
+        resultBox.textContent = JSON.stringify(data, null, 2);
+
+    } catch (error) {
+        resultBox.textContent = "오류 발생: " + error.message;
+    } finally {
+        sendBtn.disabled = false;
+    }
+}
+</script>
+</body>
+</html>

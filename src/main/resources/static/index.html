@@ -11,6 +11,20 @@
             background: #0f172a;
             color: #e2e8f0;
         }
+        
+        .menu-btn {
+	        padding: 10px 18px;
+	        border: none;
+	        border-radius: 8px;
+	        background: #2f6fed;
+	        color: white;
+	        font-size: 14px;
+	        cursor: pointer;
+	    }
+	
+	    .menu-btn\:hover {
+	        background: #2558c7;
+	    }
 
         .chat-shell {
             max-width: 900px;
@@ -123,6 +137,9 @@
             <button id="sendBtn" onclick="sendMessage()">전송</button>
         </div>
     </div>
+    <button type="button" onclick="window.location.href='knowledge.html'">
+	    지식 문서 업데이트
+	</button>
 </div>
 
 <script>
