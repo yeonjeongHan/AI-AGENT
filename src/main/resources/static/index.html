@@ -1,11 +1,150 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>Spring-Hello</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
-	</head>
-	<body>
-		Spring-Hello777
-	</body>
-</html>
+<head>
+    <title>Spring Chat</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fb;
+        }
 
+        .chat-wrapper {
+            width: 100%;
+            max-width: 800px;
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        }
+
+        .chat-header {
+            background: #4f46e5;
+            color: white;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9fafb;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .user .bubble {
+            background: #4f46e5;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot .bubble {
+            background: #e5e7eb;
+            color: #111827;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-footer button {
+            margin-left: 10px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #4f46e5;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .chat-footer button\:hover {
+            background: #4338ca;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-wrapper">
+        <div class="chat-header">
+            Spring Chat
+        </div>
+
+        <div class="chat-body" id="chatBody">
+            <div class="message bot">
+                <div class="bubble">안녕하세요. 무엇을 도와드릴까요?</div>
+            </div>
+            <div class="message user">
+                <div class="bubble">채팅창 화면으로 바꾸고 싶어요.</div>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="messageInput" placeholder="메시지를 입력하세요...">
+            <button onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const chatBody = document.getElementById("chatBody");
+            const message = input.value.trim();
+
+            if (message === "") return;
+
+            const userMsg = document.createElement("div");
+            userMsg.className = "message user";
+            userMsg.innerHTML = '<div class="bubble">' + message + '</div>';
+            chatBody.appendChild(userMsg);
+
+            input.value = "";
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        document.getElementById("messageInput").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
