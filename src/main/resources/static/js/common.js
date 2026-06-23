@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const currentPage = location.pathname.split("/").pop() || "index.html";
+    const currentPage = location.pathname.split("/").pop() || "./index.html";
 
     document.querySelectorAll(".menu li").forEach(li => {
         const a = li.querySelector("a");
