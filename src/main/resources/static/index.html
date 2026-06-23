@@ -8,66 +8,109 @@
   <style>
    
 
-    #chatBody {
-      flex: 1;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
-      overflow-y: auto;
-      background: #fff;
-    }
-
-    .message {
-      margin-bottom: 10px;
-      display: flex;
-    }
-
-    .message.user {
-      justify-content: flex-end;
-    }
-
-    .message.bot {
-      justify-content: flex-start;
-    }
-
-    .bubble {
-      max-width: 70%;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: #e5e7eb;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .message.user .bubble {
-      background: #dbeafe;
-    }
-
-    .input-area {
-      display: flex;
-      gap: 8px;
-    }
-
-    #messageInput {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-
-    #sendBtn {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-
-    #sendBtn\:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-    }
+   #chatBody {
+	  flex: 1;
+	  border: 1px solid #2a3441;
+	  border-radius: 12px;
+	  padding: 16px;
+	  overflow-y: auto;
+	  background: #0f172a; /* slate-900 */
+	}
+	
+	.message {
+	  margin-bottom: 12px;
+	  display: flex;
+	}
+	
+	.message.user {
+	  justify-content: flex-end;
+	}
+	
+	.message.bot {
+	  justify-content: flex-start;
+	}
+	
+	.bubble {
+	  max-width: 70%;
+	  padding: 12px 16px;
+	  border-radius: 16px;
+	  background: #1e293b;
+	  color: #e2e8f0;
+	  white-space: pre-wrap;
+	  word-break: break-word;
+	  border: 1px solid #334155;
+	  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+	
+	.message.user .bubble {
+	  background: linear-gradient(
+	    135deg,
+	    #2563eb,
+	    #3b82f6
+	  );
+	  color: white;
+	  border: none;
+	}
+	
+	.message.bot .bubble {
+	  background: linear-gradient(
+	    135deg,
+	    #6d28d9,
+	    #8b5cf6
+	  );
+	  color: white;
+	  border: none;
+	}
+	.input-area {
+	  display: flex;
+	  gap: 10px;
+	  margin-top: 12px;
+	}
+	
+	#messageInput {
+	  flex: 1;
+	  padding: 12px;
+	  border: 1px solid #334155;
+	  border-radius: 12px;
+	  background: #1e293b;
+	  color: #f8fafc;
+	  outline: none;
+	}
+	
+	#messageInput::placeholder {
+	  color: #94a3b8;
+	}
+	
+	#messageInput:focus {
+	  border-color: #3b82f6;
+	  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+	}
+	
+	#sendBtn {
+	  padding: 12px 20px;
+	  border: none;
+	  border-radius: 12px;
+	  background: linear-gradient(
+	    135deg,
+	    #2563eb,
+	    #3b82f6
+	  );
+	  color: white;
+	  font-weight: 600;
+	  cursor: pointer;
+	  transition: all 0.2s ease;
+	}
+	
+	#sendBtn:hover {
+	  transform: translateY(-1px);
+	  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+	}
+	
+	#sendBtn:disabled {
+	  background: #475569;
+	  cursor: not-allowed;
+	  box-shadow: none;
+	}
   </style>
 </head>
 <body>
