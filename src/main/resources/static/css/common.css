@@ -1,14 +1,3 @@
-.menu a {
-    color: #333;
-    text-decoration: none;
-    font-weight: 400;
-}
-
-.menu a.active {
-    font-weight: 700;
-    color: #000;
-}
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -19,8 +8,8 @@ body {
 
 #sidebar-container {
   width: 220px;
-  background: #f4f4f4;
-  border-right: 1px solid #ddd;
+  background: #eff6ff;
+  border-right: 1px solid #bfdbfe;
   padding: 16px;
   box-sizing: border-box;
 }
@@ -32,10 +21,45 @@ body {
   padding: 16px;
   box-sizing: border-box;
   gap: 12px;
+  overflow-y: auto;
+}
+
+.menu a {
+  display: block;
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.menu a\:hover {
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
 .menu a.active {
-  color: #2563eb;
-  font-weight: bold;
+  font-weight: 700;
+  color: #ffffff;
+  background: #2563eb;
 }
 
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button\:hover {
+  background: #1d4ed8;
+}
+
+button\:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
