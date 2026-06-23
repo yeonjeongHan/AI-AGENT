@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "abclab.api",
+      "type": "com.kt.millet.helm.test_dev.AbcLabProperties",
+      "sourceType": "com.kt.millet.helm.test_dev.AbcLabProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "abclab.api.add-key",
+      "type": "java.lang.String",
+      "sourceType": "com.kt.millet.helm.test_dev.AbcLabProperties"
+    },
+    {
+      "name": "abclab.api.add-url",
+      "type": "java.lang.String",
+      "sourceType": "com.kt.millet.helm.test_dev.AbcLabProperties"
+    },
+    {
+      "name": "abclab.api.key",
+      "type": "java.lang.String",
+      "sourceType": "com.kt.millet.helm.test_dev.AbcLabProperties"
+    },
+    {
+      "name": "abclab.api.url",
+      "type": "java.lang.String",
+      "sourceType": "com.kt.millet.helm.test_dev.AbcLabProperties"
+    }
+  ],
+  "hints": []
+}
