@@ -1,143 +1,239 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>지식 문서 업데이트</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background: #f8f9fb;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        h2 {
-            margin-top: 0;
-        }
-        .form-group {
-            margin-bottom: 16px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        textarea {
-            min-height: 240px;
-            resize: vertical;
-        }
-        button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            background: #2f6fed;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        button\:disabled {
-            background: #999;
-            cursor: not-allowed;
-        }
-        .result {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            background: #f4f6f8;
-            border: 1px solid #ddd;
-            padding: 16px;
-            border-radius: 8px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>지식 생성 화면</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f8fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #222;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button\:hover {
+      background: #1d4ed8;
+    }
+
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow: auto;
+      margin-top: 20px;
+    }
+
+    .small {
+      color: #666;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-    <h2>지식 문서 업데이트</h2>
+  <div class="container">
+    <h2>지식 생성</h2>
+    <p class="small">사용자 입력값을 받아 API를 호출합니다.</p>
 
     <div class="form-group">
-        <label for="datasetId">dataset_id</label>
-        <input type="text" id="datasetId" placeholder="예: 231a5c94-dc21-353c-9121-5361adc2cbdb" />
+      <label for="apiKey">API Key</label>
+      <input type="password" id="apiKey" placeholder="Bearer 토큰 입력" />
     </div>
 
     <div class="form-group">
-        <label for="documentId">document_id</label>
-        <input type="text" id="documentId" placeholder="예: 4ss1aa71-2c3d-4071-c236-5d12aadd1e10" />
+      <label for="name">지식 이름</label>
+      <input type="text" id="name" placeholder="신규 지식 생성" />
     </div>
 
     <div class="form-group">
-        <label for="name">문서명 (선택)</label>
-        <input type="text" id="name" placeholder="예: data.txt" />
+      <label for="description">지식 설명</label>
+      <textarea id="description" placeholder="신규 지식 API 생성 테스트"></textarea>
     </div>
 
     <div class="form-group">
-        <label for="text">문서 내용</label>
-        <textarea id="text" placeholder="업데이트할 문서 텍스트를 입력하세요."></textarea>
+      <label for="permission">접근권한</label>
+      <select id="permission">
+        <option value="all_team_members">all_team_members</option>
+        <option value="private">private</option>
+        <option value="public">public</option>
+      </select>
     </div>
 
-    <button id="sendBtn" onclick="updateKnowledge()">문서 업데이트</button>
+    <h3>조회 설정</h3>
 
-    <div id="result" class="result">결과가 여기에 표시됩니다.</div>
-</div>
+    <div class="form-group">
+      <label for="search_method">검색 설정</label>
+      <select id="search_method">
+        <option value="hybrid_search">hybrid_search</option>
+        <option value="keyword_search">keyword_search</option>
+        <option value="semantic_search">semantic_search</option>
+      </select>
+    </div>
 
-<script>
-async function updateKnowledge() {
-    const datasetId = document.getElementById("datasetId").value.trim();
-    const documentId = document.getElementById("documentId").value.trim();
-    const name = document.getElementById("name").value.trim();
-    const text = document.getElementById("text").value.trim();
-    const resultBox = document.getElementById("result");
-    const sendBtn = document.getElementById("sendBtn");
+    <div class="form-group">
+      <label class="checkbox-group">
+        <input type="checkbox" id="reranking_enable" checked />
+        리랭크 모델 사용 여부
+      </label>
+    </div>
 
-    if (!datasetId || !documentId || !text) {
-        resultBox.textContent = "dataset_id, document_id, text는 필수입니다.";
-        return;
-    }
+    <div class="row">
+      <div class="form-group">
+        <label for="reranking_provider_name">리랭크 모델 공급자 명</label>
+        <input type="text" id="reranking_provider_name" value="aion" />
+      </div>
+      <div class="form-group">
+        <label for="reranking_model_name">리랭크 모델 명</label>
+        <input type="text" id="reranking_model_name" value="AI:ON-U Rerank" />
+      </div>
+    </div>
 
-    sendBtn.disabled = true;
-    resultBox.textContent = "업데이트 중...";
+    <div class="row">
+      <div class="form-group">
+        <label for="top_k">top_k</label>
+        <input type="number" id="top_k" value="15" />
+      </div>
+      <div class="form-group">
+        <label class="checkbox-group">
+          <input type="checkbox" id="score_threshold_enabled" checked />
+          score_threshold 사용
+        </label>
+      </div>
+    </div>
 
-    try {
-        const res = await fetch("/api/knowledge/update", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                dataset_id: datasetId,
-                document_id: documentId,
-                name: name,
-                text: text
-            })
+    <div class="form-group">
+      <label for="score_threshold">score_threshold</label>
+      <input type="number" id="score_threshold" step="0.01" value="0.7" />
+    </div>
+
+    <button onclick="createDataset()">지식 생성</button>
+
+    <pre id="result">결과가 여기에 표시됩니다.</pre>
+  </div>
+
+  <script>
+    async function createDataset() {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const permission = document.getElementById('permission').value;
+      const search_method = document.getElementById('search_method').value;
+      const reranking_enable = document.getElementById('reranking_enable').checked;
+      const reranking_provider_name = document.getElementById('reranking_provider_name').value.trim();
+      const reranking_model_name = document.getElementById('reranking_model_name').value.trim();
+      const top_k = parseInt(document.getElementById('top_k').value, 10);
+      const score_threshold_enabled = document.getElementById('score_threshold_enabled').checked;
+      const score_threshold = parseFloat(document.getElementById('score_threshold').value);
+
+      const payload = {
+        name,
+        description,
+        permission,
+        retrieval_model: {
+          search_method,
+          reranking_enable,
+          reranking_model: {
+            reranking_provider_name,
+            reranking_model_name
+          },
+          top_k,
+          score_threshold_enabled,
+          score_threshold
+        }
+      };
+
+      document.getElementById('result').textContent = '요청 중...';
+
+      try {
+        const response = await fetch('https\://api.abclab.ktds.com/v1/datasets', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
         });
 
-        const data = await res.json();
+        const text = await response.text();
 
-        if (!res.ok) {
-            throw new Error(data.message || "HTTP " + res.status);
+        if (!response.ok) {
+          document.getElementById('result').textContent =
+            `에러 발생 (${response.status})\n\n${text}`;
+          return;
         }
 
-        resultBox.textContent = JSON.stringify(data, null, 2);
-
-    } catch (error) {
-        resultBox.textContent = "오류 발생: " + error.message;
-    } finally {
-        sendBtn.disabled = false;
+        document.getElementById('result').textContent =
+          `성공\n\n${text}`;
+      } catch (error) {
+        document.getElementById('result').textContent =
+          `네트워크 또는 CORS 오류\n\n${error.message}`;
+      }
     }
-}
-</script>
+  </script>
 </body>
 </html>

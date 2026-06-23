@@ -1,105 +1,211 @@
-<script>
-    // 공통 sidebar 불러오기
-    fetch("components/sidebar.html")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("sidebar 불러오기 실패: " + response.status);
-            }
-            return response.text();
-        })
-        .then(html => {
-            document.getElementById("sidebar-container").innerHTML = html;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>챗봇</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-            // 현재 페이지 active 처리
-            const currentPage = location.pathname.split("/").pop() || "index.html";
+    #sidebar-container {
+      width: 220px;
+      background: #f4f4f4;
+      border-right: 1px solid #ddd;
+      padding: 16px;
+      box-sizing: border-box;
+    }
 
-            document.querySelectorAll(".menu a").forEach(a => {
-                const linkPage = a.getAttribute("href");
-                if (linkPage === currentPage) {
-                    a.classList.add("active");
-                }
-            });
-        })
-        .catch(error => {
-            console.error(error);
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      box-sizing: border-box;
+      gap: 12px;
+    }
+
+    #chatBody {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      display: flex;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message.bot {
+      justify-content: flex-start;
+    }
+
+    .bubble {
+      max-width: 70%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #e5e7eb;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .message.user .bubble {
+      background: #dbeafe;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+    }
+
+    #messageInput {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #sendBtn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+
+    #sendBtn\:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <div class="main">
+    <div id="chatBody"></div>
+
+    <div class="input-area">
+      <input type="text" id="messageInput" placeholder="메시지를 입력하세요" />
+      <button id="sendBtn">전송</button>
+    </div>
+  </div>
+
+  <script src="common.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const input = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
+
+      if (input) {
+        input.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
         });
+      }
+
+      if (sendBtn) {
+        sendBtn.addEventListener("click", sendMessage);
+      }
+    });
 
     async function sendMessage() {
-        const input = document.getElementById("messageInput");
-        const sendBtn = document.getElementById("sendBtn");
-        const message = input.value.trim();
+      const input = document.getElementById("messageInput");
+      const sendBtn = document.getElementById("sendBtn");
 
-        if (!message) return;
+      if (!input || !sendBtn) {
+        console.error("messageInput 또는 sendBtn 요소가 없습니다.");
+        return;
+      }
 
-        addMessage("user", message);
-        input.value = "";
-        sendBtn.disabled = true;
+      const message = input.value.trim();
+      if (!message) return;
 
-        const loadingId = addMessage("bot", "응답 생성 중...");
+      addMessage("user", message);
+      input.value = "";
+      sendBtn.disabled = true;
 
-        try {
-            const res = await fetch("/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: message,
-                    user: "test1234",
-                    conversation_id: "",
-                    files: [
-                        {
-                            type: "image",
-                            transfer_method: "remote_url",
-                            url: "https://api.abclab.ktds.com/v1/logo/logo.png"
-                        }
-                    ]
-                })
-            });
+      const loadingId = addMessage("bot", "응답 생성 중...");
 
-            if (!res.ok) {
-                throw new Error("HTTP " + res.status);
-            }
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: message,
+            user: "test1234",
+            conversation_id: "",
+            files: [
+              {
+                type: "image",
+                transfer_method: "remote_url",
+                url: "https://api.abclab.ktds.com/v1/logo/logo.png"
+              }
+            ]
+          })
+        });
 
-            const data = await res.json();
-            const reply = data.reply ?? "응답이 없습니다.";
-
-            removeMessage(loadingId);
-            addMessage("bot", reply);
-
-        } catch (error) {
-            removeMessage(loadingId);
-            addMessage("bot", "오류 발생: " + error.message);
-        } finally {
-            sendBtn.disabled = false;
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
         }
+
+        const data = await res.json();
+        const reply = data.reply ?? "응답이 없습니다.";
+
+        removeMessage(loadingId);
+        addMessage("bot", reply);
+
+      } catch (error) {
+        removeMessage(loadingId);
+        addMessage("bot", "오류 발생: " + error.message);
+      } finally {
+        sendBtn.disabled = false;
+      }
     }
 
     function addMessage(type, text) {
-        const chatBody = document.getElementById("chatBody");
-        const div = document.createElement("div");
-        div.className = "message " + type;
+      const chatBody = document.getElementById("chatBody");
+      if (!chatBody) {
+        console.error("chatBody 요소가 없습니다.");
+        return null;
+      }
 
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        bubble.textContent = text;
+      const div = document.createElement("div");
+      div.className = "message " + type;
 
-        div.appendChild(bubble);
-        chatBody.appendChild(div);
-        chatBody.scrollTop = chatBody.scrollHeight;
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
 
-        return div;
+      div.appendChild(bubble);
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      return div;
     }
 
     function removeMessage(element) {
-        if (element && element.parentNode) {
-            element.parentNode.removeChild(element);
-        }
+      if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
     }
-
-    document.getElementById("messageInput").addEventListener("keypress", function(e) {
-        if (e.key === "Enter") {
-            sendMessage();
-        }
-    });
-</script>
+  </script>
+</body>
+</html>
