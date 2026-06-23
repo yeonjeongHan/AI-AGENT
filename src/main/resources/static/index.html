@@ -1,115 +1,105 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>고정 사이드 메뉴</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<script>
+    // 공통 sidebar 불러오기
+    fetch("components/sidebar.html")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("sidebar 불러오기 실패: " + response.status);
+            }
+            return response.text();
+        })
+        .then(html => {
+            document.getElementById("sidebar-container").innerHTML = html;
+
+            // 현재 페이지 active 처리
+            const currentPage = location.pathname.split("/").pop() || "index.html";
+
+            document.querySelectorAll(".menu a").forEach(a => {
+                const linkPage = a.getAttribute("href");
+                if (linkPage === currentPage) {
+                    a.classList.add("active");
+                }
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    async function sendMessage() {
+        const input = document.getElementById("messageInput");
+        const sendBtn = document.getElementById("sendBtn");
+        const message = input.value.trim();
+
+        if (!message) return;
+
+        addMessage("user", message);
+        input.value = "";
+        sendBtn.disabled = true;
+
+        const loadingId = addMessage("bot", "응답 생성 중...");
+
+        try {
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message,
+                    user: "test1234",
+                    conversation_id: "",
+                    files: [
+                        {
+                            type: "image",
+                            transfer_method: "remote_url",
+                            url: "https://api.abclab.ktds.com/v1/logo/logo.png"
+                        }
+                    ]
+                })
+            });
+
+            if (!res.ok) {
+                throw new Error("HTTP " + res.status);
+            }
+
+            const data = await res.json();
+            const reply = data.reply ?? "응답이 없습니다.";
+
+            removeMessage(loadingId);
+            addMessage("bot", reply);
+
+        } catch (error) {
+            removeMessage(loadingId);
+            addMessage("bot", "오류 발생: " + error.message);
+        } finally {
+            sendBtn.disabled = false;
+        }
     }
 
-    body {
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      background-color: #f5f7fa;
+    function addMessage(type, text) {
+        const chatBody = document.getElementById("chatBody");
+        const div = document.createElement("div");
+        div.className = "message " + type;
+
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.textContent = text;
+
+        div.appendChild(bubble);
+        chatBody.appendChild(div);
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        return div;
     }
 
-    /* 왼쪽 고정 메뉴바 */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 100vh;
-      background-color: #1f2937;
-      color: #fff;
-      padding: 20px;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+    function removeMessage(element) {
+        if (element && element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
     }
 
-    .sidebar h2 {
-      font-size: 20px;
-      margin-bottom: 30px;
-      color: #ffffff;
-    }
-
-    .menu {
-      list-style: none;
-    }
-
-    .menu li {
-      margin-bottom: 12px;
-    }
-
-    .menu a {
-      display: block;
-      text-decoration: none;
-      color: #d1d5db;
-      padding: 12px 14px;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-
-    .menu a\:hover {
-      background-color: #374151;
-      color: #fff;
-    }
-
-    .menu a.active {
-      background-color: #2563eb;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    /* 본문 영역 */
-    .content {
-      margin-left: 220px; /* sidebar 너비만큼 여백 */
-      padding: 30px;
-      min-height: 100vh;
-    }
-
-    .page-box {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    }
-
-    h1 {
-      margin-bottom: 16px;
-      color: #111827;
-    }
-
-    p {
-      color: #4b5563;
-      line-height: 1.6;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="sidebar">
-    <h2>메뉴</h2>
-    <ul class="menu">
-      <li><a href="#chatbot" class="active">챗봇</a></li>
-      <li><a href="#inventory">재고정합성</a></li>
-    </ul>
-  </div>
-
-  <div class="content">
-    <div class="page-box" id="chatbot">
-      <h1>챗봇 화면</h1>
-      <p>여기에 챗봇 관련 내용을 넣으시면 됩니다.</p>
-    </div>
-
-    <div class="page-box" id="inventory" style="margin-top: 20px;">
-      <h1>재고정합성 화면</h1>
-      <p>여기에 재고정합성 관련 내용을 넣으시면 됩니다.</p>
-    </div>
-  </div>
-
-</body>
-</html>
+    document.getElementById("messageInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+    });
+</script>

@@ -1,0 +1,10 @@
+.menu a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+.menu a.active {
+    font-weight: 700;
+    color: #000;
+}
