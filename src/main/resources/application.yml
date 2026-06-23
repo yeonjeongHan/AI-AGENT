@@ -1,0 +1,7 @@
+abclab:
+  api:
+    url: ${API_URL}
+    key: ${API_KEY}
+    add_url: ${API_ADD_URL}
+    add_key: ${API_ADD_KEY}
+    
