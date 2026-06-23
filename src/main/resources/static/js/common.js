@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             sidebarContainer.innerHTML = html;
 
-            const currentPage = location.pathname.split("/").pop() || "index.html";
+            const currentPage = location.pathname.split("/").pop() || "./index.html";
             document.querySelectorAll(".menu a").forEach(a => {
                 if (a.getAttribute("href") === currentPage) {
                     a.classList.add("active");
