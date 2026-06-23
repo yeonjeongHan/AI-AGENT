@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("components/sidebar.html")
+    fetch("./components/sidebar.html")
         .then(response => {
             if (!response.ok) throw new Error("sidebar 불러오기 실패: " + response.status);
             return response.text();
