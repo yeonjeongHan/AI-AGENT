@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>재고정합성</title>
+  <link rel="stylesheet" href="./css/common.css">
+  <style>
+
+    .container {
+	    width: 100%;
+	    max-width: none;
+	    margin: 0;
+	    padding: 28px 30px;
+	    background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.96));
+	    border: 1px solid var(--panel-border);
+	    border-radius: 20px;
+	    box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    .small {
+      margin: 0 0 24px;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #24324a;
+      border-radius: 12px;
+      background: #0b1324;
+      color: #e5e7eb;
+      font-size: 14px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    select:focus, input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18);
+    }
+
+    .chart-box {
+      margin-top: 24px;
+      background: #050816;
+      border: 1px solid rgba(59, 130, 246, 0.18);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    #result {
+      margin-top: 16px;
+      color: #cbd5e1;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      align-items: end;
+      flex-wrap: wrap;
+    }
+
+    .top-actions .form-group {
+      min-width: 160px;
+    }
+
+    @media (max-width: 768px) {
+      .main { padding: 16px; }
+      .container { padding: 20px; border-radius: 16px; }
+      h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar-container"></div>
+
+  <div class="main">
+    <div class="container">
+      <h2>재고 현황 그래프</h2>
+      <p class="small">조회 기간을 선택하면 AI 조회 결과를 바탕으로 재고 현황 그래프를 표시합니다.</p>
+
+      <div class="top-actions">
+        <div class="form-group">
+          <label for="fromYear">From 년</label>
+          <select id="fromYear"></select>
+        </div>
+        <div class="form-group">
+          <label for="fromMonth">From 월</label>
+          <select id="fromMonth"></select>
+        </div>
+        <div class="form-group">
+          <label for="toYear">To 년</label>
+          <select id="toYear"></select>
+        </div>
+        <div class="form-group">
+          <label for="toMonth">To 월</label>
+          <select id="toMonth"></select>
+        </div>
+        <div class="form-group">
+          <button onclick="searchInventory()">조회</button>
+        </div>
+      </div>
+
+      <div class="chart-box">
+        <canvas id="inventoryChart" height="110"></canvas>
+      </div>
+
+      <div id="result">조회 결과가 여기에 표시됩니다.</div>
+    </div>
+  </div>
+
+  <script src="./js/common.js"></script>
+  <script src="./js/stock.js"></script>
+</body>
+</html>
