@@ -51,7 +51,7 @@ public class ChatController {
         return response;
     }
     
-    @PostMapping("/knowledge/update")
+    @PostMapping("/update")
     public ResponseEntity<Map<String, Object>> updateKnowledge(@RequestBody Map<String, Object> request) {
         try {
             String datasetId = request.get("dataset_id") != null ? request.get("dataset_id").toString() : "";
