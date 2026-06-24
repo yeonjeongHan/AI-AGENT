@@ -1,4 +1,4 @@
-package com.kt.millet.helm.test_dev;
+package com.kt.millet.helm.controller;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

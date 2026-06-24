@@ -1,4 +1,4 @@
-package com.kt.millet.helm.test_dev;
+package com.kt.millet.helm.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
