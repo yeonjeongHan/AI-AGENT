@@ -51,23 +51,7 @@ public class ChatController {
         return response;
     }
     
-    @PostMapping("/update")
-    public ResponseEntity<Map<String, Object>> updateKnowledge(@RequestBody Map<String, Object> request) {
-//        try {
-//
-//    	        Map<String, Object> response = knowledgeService.createKnowledge(request);
-//    	        return ResponseEntity.ok(response);
-//    	    } catch (Exception e) {
-//    	        e.printStackTrace();
-//
-//    	        Map<String, Object> error = new HashMap<>();
-//    	        error.put("success", false);
-//    	        error.put("message", e.getMessage());
-//
-//    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-//    	    }
-    }
-    
+
 
     @PostMapping("/stock")
     public ResponseEntity<Map<String, Object>> getInventoryChart(@RequestBody Map<String, String> request) {
